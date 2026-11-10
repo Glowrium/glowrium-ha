@@ -1,0 +1,5 @@
+pytest>=8
+pytest-asyncio>=0.24
+ruff>=0.8
+# Install a Home Assistant version compatible with your Python/runtime first.
+# Runtime BLE/CBOR requirements are pinned in manifest.json.

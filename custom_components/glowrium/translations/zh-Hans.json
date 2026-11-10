@@ -1,0 +1,56 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "添加 Glowrium",
+        "menu_options": {
+          "cloud": "登录 Glowrium 云端账号",
+          "local": "添加蓝牙灯"
+        }
+      },
+      "cloud": {
+        "title": "Glowrium 云端账号",
+        "description": "登录后可控制账号关联设备。另行添加的同 MAC 蓝牙灯会与云端共用实体。",
+        "data": {
+          "email": "邮箱",
+          "password": "密码"
+        }
+      },
+      "local": {
+        "title": "附近蓝牙设备",
+        "data": {
+          "device": "灯具"
+        }
+      },
+      "local_confirm": {
+        "title": "添加 {name}",
+        "description": "型号：{model}，硬件 MAC：{mac}。请确认这是您的设备。当前本地蓝牙可能缺少身份认证，附近其他客户端也可能控制它。若glowrium App 正在连接，请先断开。此操作不会在云端绑定、激活或重置设备。",
+        "data": {
+          "confirm": "我确认这是我的灯具，并启用本地控制"
+        }
+      },
+      "reauth_confirm": {
+        "title": "重新登录 Glowrium",
+        "description": "云端登录已过期，请使用原账号重新登录。已独立添加的蓝牙设备可继续使用。",
+        "data": {
+          "email": "邮箱",
+          "password": "密码"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "无法连接 Glowrium API",
+      "invalid_auth": "邮箱或密码不正确",
+      "wrong_account": "请使用最初配置的账号登录",
+      "confirmation_required": "请确认所选灯具后再连接",
+      "cannot_connect_bluetooth": "无法通过蓝牙读取灯具，请检查距离并断开厂商 App 的蓝牙连接。"
+    },
+    "abort": {
+      "cloud_unavailable": "暂不支持添加 Glowrium 云端账号",
+      "already_configured": "此 Glowrium 账号或蓝牙设备已配置",
+      "reauth_successful": "认证信息已更新",
+      "no_devices_found": "未找到可连接的 C017 或 C045 广播，请检查蓝牙适配器或支持主动连接的蓝牙代理后重试。",
+      "unsupported_device": "该蓝牙设备不是支持的 C017 或 C045"
+    }
+  }
+}
