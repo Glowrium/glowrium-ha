@@ -1,33 +1,33 @@
 # Glowrium for Home Assistant
 
-Control Glowrium C017 and C045 lights through a Glowrium cloud account, local Bluetooth, or both.
+Control H1 and H4 lights through your Glowrium cloud account, local Bluetooth, or both.
 
 ## Install
 
-1. Copy `custom_components/glowrium` into your Home Assistant `custom_components` directory.
+1. Copy `custom_components/glowrium` to the `custom_components` directory in Home Assistant.
 2. Restart Home Assistant.
 3. Go to **Settings > Devices & services**, add **Glowrium**, and choose one or both setup options:
-   - **Glowrium cloud account:** sign in with your email and password for remote control.
-   - **Nearby Bluetooth light:** select a discovered C017 or C045 and confirm that it is yours. An account or internet connection is not required.
+   - **Glowrium cloud account:** Sign in with your email address and password to enable remote control.
+   - **Nearby Bluetooth light:** Select a discovered H1 or H4 and confirm that it is yours. No account or internet connection is required.
 
-Bluetooth control requires a Home Assistant-supported adapter or an active ESPHome Bluetooth Proxy with a free connection slot. A passive scanner cannot control lights. Discovery does not connect to or control a light before you confirm it.
+Bluetooth control requires a Home Assistant-supported adapter or an active ESPHome Bluetooth Proxy with an available connection slot. A passive scanner alone cannot control lights. The discovery process does not connect to or control a light until you confirm it.
 
-## Supported controls
+## Supported Controls
 
 | Model | Controls |
 | --- | --- |
-| C017 | Combined light on/off, main brightness, 2700–6500 K color temperature, scene presets, separate Main light and Mood light switches, Mood brightness, and Circadian rhythm. |
-| C045 | On/off, brightness, HS color, six color-temperature presets (2000, 2700, 4000, 5000, 6500, and 7500 K), dynamic and music effects, and effect speed. Brightness is unavailable in music modes. |
+| H1 | Overall on/off, main light brightness, 2700–6500 K color temperature, scene presets, separate Main Light and Mood Light switches, Mood Light brightness, and Circadian Rhythm. |
+| H4 | On/off, brightness, HS color, six color-temperature presets (2000, 2700, 4000, 5000, 6500, and 7500 K), dynamic and music effects, and effect speed. Brightness cannot be adjusted in music mode. |
 
-## Connection notes
+## Connection Notes
 
-- When the same light is added through both options, it appears as one set of entities. Bluetooth is preferred; a linked cloud account can provide fallback if Bluetooth fails before a command is written.
-- A Bluetooth-only light has no cloud fallback. Removing a cloud account does not remove a separately added Bluetooth light.
-- Local Bluetooth access may not authenticate the client. Another nearby BLE client may be able to control the light. Disconnect the manufacturer app if it is using the light's Bluetooth connection.
-- Setup reads the light's state; it does not activate, bind, reset, or update the device. A factory-reset light that needs activation must first be prepared with the manufacturer app.
+- When the same light is added using both options, it appears as a single set of entities. Bluetooth is preferred. If Bluetooth fails before a command is sent, the linked cloud account can provide fallback control.
+- A Bluetooth-only light does not have cloud fallback. Removing the cloud account does not remove a Bluetooth light that was added separately.
+- Local Bluetooth access may not authenticate clients, so another nearby BLE client may also be able to control the light. Disconnect the manufacturer's app if it is using the light's Bluetooth connection.
+- Setup only reads the light's status; it does not activate, link, reset, or update the device. If a factory-reset light needs activation, set it up first using the manufacturer's app.
 
 ## Troubleshooting
 
-- If a Bluetooth light is not found, check the adapter or active proxy, connection slots, range, and whether another app is connected.
-- If local control fails, download the Glowrium integration diagnostics to inspect the Bluetooth connection status and failure reason.
-- If cloud control asks you to reconnect, sign in with the originally configured account.
+- If a Bluetooth light cannot be found, check the adapter or active proxy, available connection slots, signal range, and whether another app is already connected.
+- If local control fails, download the Glowrium integration diagnostics to check the Bluetooth connection status and failure details.
+- If cloud control prompts you to sign in again, use the account originally used for setup.

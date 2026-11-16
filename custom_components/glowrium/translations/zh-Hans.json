@@ -49,8 +49,8 @@
       "cloud_unavailable": "暂不支持添加 Glowrium 云端账号",
       "already_configured": "此 Glowrium 账号或蓝牙设备已配置",
       "reauth_successful": "认证信息已更新",
-      "no_devices_found": "未找到可连接的 C017 或 C045 广播，请检查蓝牙适配器或支持主动连接的蓝牙代理后重试。",
-      "unsupported_device": "该蓝牙设备不是支持的 C017 或 C045"
+      "no_devices_found": "未找到可连接的 H1 或 H4 广播，请检查蓝牙适配器或支持主动连接的蓝牙代理后重试。",
+      "unsupported_device": "该蓝牙设备不是支持的 H1 或 H4"
     }
   }
 }

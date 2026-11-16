@@ -25,7 +25,7 @@ from .api import GlowriumApi, GlowriumApiError, GlowriumAuthError
 from .bluetooth.advertisement import GlowriumAdvertisement
 from .bluetooth.profiles import DeviceProfile, UnsupportedCommand
 from .bluetooth.transport import BleTransport, BleUnavailable
-from .const import DEFAULT_SCAN_INTERVAL, DOMAIN, MODEL_C017, MODEL_C045
+from .const import DEFAULT_SCAN_INTERVAL, DOMAIN, MODEL_C017, MODEL_C045, display_model
 from .identity import hardware_key
 
 _LOGGER = logging.getLogger(__name__)
@@ -92,7 +92,7 @@ class GlowriumCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
             identifiers={(DOMAIN, device_id)},
             name=self.devices[device_id].get("name"),
             manufacturer="Glowrium",
-            model=self.devices[device_id].get("productKey"),
+            model=display_model(self.devices[device_id].get("productKey")),
         )
         if device_id not in self.owners:
             self._set_owner(device_id, entry_id)

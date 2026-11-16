@@ -106,19 +106,25 @@ _SENTENCES = {
         "set [the] {device_name} light brightness to {0..100:level}%",
         "set [the] {device_name} light brightness to {0..100:level}% in [the] {area}",
         "set [the] c045 light brightness to {0..100:level} percent",
+        "set [the] h4 light brightness to {0..100:level} percent",
         "set [the] c045 light brightness to {0..100:level} percent in [the] {area}",
+        "set [the] h4 light brightness to {0..100:level} percent in [the] {area}",
     ],
     "c045_up": [
         "brighten [the] {device_name} light",
         "brighten [the] {device_name} light in [the] {area}",
         "brighten [the] c045 light",
+        "brighten [the] h4 light",
         "brighten [the] c045 light in [the] {area}",
+        "brighten [the] h4 light in [the] {area}",
     ],
     "c045_down": [
         "dim [the] {device_name} light",
         "dim [the] {device_name} light in [the] {area}",
         "dim [the] c045 light",
+        "dim [the] h4 light",
         "dim [the] c045 light in [the] {area}",
+        "dim [the] h4 light in [the] {area}",
     ],
     "speed_set": [
         "set [the] effect speed to {1..100:level} percent",
@@ -304,7 +310,7 @@ def _spoken_device_name(result: Any) -> str | None:
         return None
     spoken = str(match.value).strip()
     # Generic light/C045 sentences may also match the name wildcard.
-    return None if _normalize_name(spoken) in ("light", "c045") else spoken
+    return None if _normalize_name(spoken) in ("light", "c045", "h4") else spoken
 
 
 def _target_device_id(
@@ -331,9 +337,9 @@ def _target_device_id(
     ]
     light_name = "Main light" if channel in ("main", "main_brightness") else "Mood light"
     if not candidates:
-        return None, f"I couldn't find a C017 {light_name} there."
+        return None, f"I couldn't find an H1 {light_name} there."
     if len(candidates) > 1:
-        return None, f"More than one C017 {light_name} matches that command."
+        return None, f"More than one H1 {light_name} matches that command."
     return candidates[0], None
 
 

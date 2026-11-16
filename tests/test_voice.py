@@ -576,6 +576,7 @@ def test_named_voice_uses_ha_device_rename(hass, hub, monkeypatch):
 def test_generic_light_sentence_does_not_treat_light_as_device_name():
     assert voice._spoken_device_name(_result(device_name="light")) is None
     assert voice._spoken_device_name(_result(device_name="C045")) is None
+    assert voice._spoken_device_name(_result(device_name="H4")) is None
     assert voice._spoken_device_name(_result(device_name="Tom")) == "Tom"
 
 

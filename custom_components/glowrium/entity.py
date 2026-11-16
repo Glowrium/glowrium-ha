@@ -5,7 +5,7 @@ from __future__ import annotations
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import DOMAIN, display_model
 from .coordinator import GlowriumCoordinator
 from .identity import normalize_mac
 
@@ -26,7 +26,7 @@ class GlowriumEntity(CoordinatorEntity[GlowriumCoordinator]):
             identifiers={(DOMAIN, device_id)},
             name=self.device.get("name") or f"Glowrium {device_id}",
             manufacturer="Glowrium",
-            model=self.device.get("productKey"),
+            model=display_model(self.device.get("productKey")),
             sw_version=self.device.get("firmwareVersion"),
         )
         if mac := normalize_mac(self.device.get("bluetoothMac")):
