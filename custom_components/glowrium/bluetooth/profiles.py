@@ -217,7 +217,7 @@ class DeviceProfile:
     def _c017(self, command: str, values: dict) -> dict[int, Any]:
         target = values.get("target", "main")
         if target not in ("main", "auxiliary", "all"):
-            raise UnsupportedCommand(f"Unsupported C017 target: {target}")
+            raise UnsupportedCommand(f"Unsupported H1 target: {target}")
         auxiliary = target == "auxiliary"
         power_key = 23 if auxiliary else 8
         if command in ("turn_on", "turn_off"):
@@ -254,7 +254,7 @@ class DeviceProfile:
             return {8: True, 23: True, 15: scale}
         if command == "set_effect" and values.get("effect") in C017_EFFECTS:
             return {1: 1, 7: C017_EFFECTS[values["effect"]]}
-        raise UnsupportedCommand(f"Unsupported C017 command: {command}")
+        raise UnsupportedCommand(f"Unsupported H1 command: {command}")
 
     def _dynamic(self) -> list[int]:
         data = list(self.raw.get(24, []))
@@ -312,4 +312,4 @@ class DeviceProfile:
                 101 - max(1, self._percent(values["speed"]))
             )
             return {24: bytes(dynamic)}
-        raise UnsupportedCommand(f"Unsupported C045 command: {command}")
+        raise UnsupportedCommand(f"Unsupported H4 command: {command}")

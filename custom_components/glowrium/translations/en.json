@@ -4,34 +4,34 @@
       "user": {
         "title": "Add Glowrium",
         "menu_options": {
-          "cloud": "Sign in to Glowrium cloud",
+          "cloud": "Sign in to your Glowrium cloud account",
           "local": "Add a Bluetooth light"
         }
       },
       "cloud": {
-        "title": "Glowrium cloud account",
-        "description": "Sign in for account-linked remote control. A separately added Bluetooth light with the same hardware MAC shares these entities.",
+        "title": "Glowrium Cloud Account",
+        "description": "Sign in to control devices linked to your account. Separately added Bluetooth lights with the same MAC address share the same Home Assistant entities.",
         "data": {
           "email": "Email",
           "password": "Password"
         }
       },
       "local": {
-        "title": "Nearby Bluetooth lights",
+        "title": "Nearby Bluetooth Lights",
         "data": {
           "device": "Light"
         }
       },
       "local_confirm": {
         "title": "Add {name}",
-        "description": "Model: {model}, hardware MAC: {mac}. Confirm this is your light. Local BLE may lack authentication; nearby clients may also be able to control it. If the glowrium App is connected, disconnect it before continuing. Adding this light does not bind, activate or reset it in the cloud.",
+        "description": "Model: {model} | Hardware MAC: {mac}. Make sure this is your light before continuing. Local Bluetooth Low Energy (BLE) access may not authenticate clients, so other nearby clients may also be able to control it. If the GLOWRIUM app is connected to the light, disconnect it first. Adding this light will not link, activate, or reset it in the cloud.",
         "data": {
-          "confirm": "I recognize this light and want to enable local control"
+          "confirm": "I confirm this is my light and want to enable local control"
         }
       },
       "reauth_confirm": {
-        "title": "Reconnect Glowrium",
-        "description": "Your cloud session expired. Sign in with the same account. Independently added Bluetooth lights continue to work.",
+        "title": "Sign In to Glowrium Again",
+        "description": "Your cloud session has expired. Sign in again with the same account. Separately added Bluetooth lights will continue to work.",
         "data": {
           "email": "Email",
           "password": "Password"
@@ -40,17 +40,17 @@
     },
     "error": {
       "cannot_connect": "Unable to connect to the Glowrium API",
-      "invalid_auth": "Invalid email or password",
-      "wrong_account": "Sign in with the originally configured account",
+      "invalid_auth": "Incorrect email or password",
+      "wrong_account": "Sign in with the account originally used for setup",
       "confirmation_required": "Confirm the selected light before connecting",
-      "cannot_connect_bluetooth": "Unable to read the light over Bluetooth. Check range and disconnect the manufacturer app."
+      "cannot_connect_bluetooth": "Unable to read the light over Bluetooth. Check the distance and disconnect the manufacturer's app."
     },
     "abort": {
       "cloud_unavailable": "Glowrium cloud setup is currently unavailable",
-      "already_configured": "This Glowrium account or local light is already configured",
-      "reauth_successful": "Authentication updated",
-      "no_devices_found": "No supported, connectable C017 or C045 advertisement found. Check the Bluetooth adapter or active proxy and try again.",
-      "unsupported_device": "This Bluetooth device is not a supported C017 or C045"
+      "already_configured": "This Glowrium account or Bluetooth light is already configured",
+      "reauth_successful": "Authentication information updated",
+      "no_devices_found": "No connectable H1 or H4 device was found. Check your Bluetooth adapter or active Bluetooth proxy, then try again.",
+      "unsupported_device": "This Bluetooth device is not a supported H1 or H4 model"
     }
   }
 }

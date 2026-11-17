@@ -28,6 +28,7 @@ from .const import (
     DEFAULT_API_URL,
     DEFAULT_BRAND,
     DOMAIN,
+    display_model,
 )
 
 CONF_API_URL = "api_url"
@@ -112,7 +113,10 @@ class GlowriumConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 {
                     vol.Required("device"): vol.In(
                         {
-                            key: f"{adv.name} ({adv.product_key}, {adv.mac[-6:]})"
+                            key: (
+                                f"{adv.name} "
+                                f"({display_model(adv.product_key)}, {adv.mac[-6:]})"
+                            )
                             for key, adv in found.items()
                         }
                     )
@@ -159,7 +163,7 @@ class GlowriumConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=vol.Schema({vol.Required("confirm", default=False): bool}),
             description_placeholders={
                 "name": self._local.name,
-                "model": self._local.product_key,
+                "model": display_model(self._local.product_key),
                 "mac": self._local.mac,
             },
             errors=errors,
