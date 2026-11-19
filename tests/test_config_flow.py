@@ -10,7 +10,7 @@ from custom_components.glowrium.bluetooth.transport import BleUnavailable
 
 @pytest.fixture
 def flow(hass, monkeypatch):
-    monkeypatch.setattr(module, "DEFAULT_API_URL", "https://api.example.test")
+    monkeypatch.setattr(module, "DEFAULT_API_URL", "https://api.example.test/iotapi")
     instance = module.GlowriumConfigFlow()
     instance.hass = hass
     instance.context = {"source": "user"}

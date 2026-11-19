@@ -247,6 +247,30 @@ async def test_unbinding_cloud_revokes_cloud_fallback(
     api.command.assert_not_awaited()
 
 
+async def test_cloud_poll_is_60_seconds_while_ble_stays_at_30(
+    hub, entry, api, monkeypatch
+):
+    now = [0.0]
+    monkeypatch.setattr(coordinator_module, "monotonic", lambda: now[0])
+    api.devices.return_value = catalog()
+    api.state.return_value = {"online": True}
+    await hub.async_add_account(entry, api, catalog())
+    radio = SimpleNamespace(refresh=AsyncMock())
+    hub.ble["existing-cloud-id"] = radio
+
+    assert hub.update_interval.total_seconds() == 30
+    await hub._async_update_data()
+    assert api.devices.await_count == 1
+    now[0] = 30.0
+    await hub._async_update_data()
+    assert api.devices.await_count == 1
+    now[0] = 60.0
+    await hub._async_update_data()
+    assert api.devices.await_count == 2
+    assert api.state.await_count == 2
+    assert radio.refresh.await_count == 3
+
+
 async def test_shared_hub_does_not_inherit_first_config_entry(hub):
     assert hub.config_entry is None
 

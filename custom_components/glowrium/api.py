@@ -52,7 +52,7 @@ class GlowriumApi:
     ) -> dict[str, Any]:
         response = await self._request(
             "POST",
-            "/api/homeassistant/v1/links/login",
+            "/homeassistant/v1/links/login",
             json={
                 "brand": brand,
                 "email": email,
@@ -78,19 +78,19 @@ class GlowriumApi:
         }
 
     async def validate(self) -> dict[str, Any]:
-        return await self._request("GET", "/api/homeassistant/v1/me")
+        return await self._request("GET", "/homeassistant/v1/me")
 
     async def devices(self) -> list[dict[str, Any]]:
-        return await self._request("GET", "/api/homeassistant/v1/devices")
+        return await self._request("GET", "/homeassistant/v1/devices")
 
     async def unlink(self) -> None:
         await self._request(
-            "DELETE", f"/api/homeassistant/v1/links/{quote(self._link_id)}"
+            "DELETE", f"/homeassistant/v1/links/{quote(self._link_id)}"
         )
 
     async def state(self, device_id: str) -> dict[str, Any]:
         return await self._request(
-            "GET", f"/api/homeassistant/v1/devices/{device_id}/state"
+            "GET", f"/homeassistant/v1/devices/{device_id}/state"
         )
 
     async def command(
@@ -98,7 +98,7 @@ class GlowriumApi:
     ) -> dict[str, Any]:
         payload = {"command": command, **values}
         return await self._request(
-            "POST", f"/api/homeassistant/v1/devices/{device_id}/commands", json=payload
+            "POST", f"/homeassistant/v1/devices/{device_id}/commands", json=payload
         )
 
     async def _request(
@@ -151,7 +151,7 @@ class GlowriumApi:
                 return
             credentials = await self._request(
                 "POST",
-                "/api/homeassistant/v1/links/refresh",
+                "/homeassistant/v1/links/refresh",
                 authenticated=False,
                 json={"linkId": self._link_id, "refreshToken": self._refresh_token},
             )

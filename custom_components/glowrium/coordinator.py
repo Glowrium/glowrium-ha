@@ -25,7 +25,14 @@ from .api import GlowriumApi, GlowriumApiError, GlowriumAuthError
 from .bluetooth.advertisement import GlowriumAdvertisement
 from .bluetooth.profiles import DeviceProfile, UnsupportedCommand
 from .bluetooth.transport import BleTransport, BleUnavailable
-from .const import DEFAULT_SCAN_INTERVAL, DOMAIN, MODEL_C017, MODEL_C045, display_model
+from .const import (
+    CLOUD_SCAN_INTERVAL,
+    DEFAULT_SCAN_INTERVAL,
+    DOMAIN,
+    MODEL_C017,
+    MODEL_C045,
+    display_model,
+)
 from .identity import hardware_key
 
 _LOGGER = logging.getLogger(__name__)
@@ -53,6 +60,7 @@ class GlowriumCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
         self.ble: dict[str, BleTransport] = {}
         self._cloud_states: dict[str, dict[str, dict]] = {}
         self._cloud_at: dict[str, dict[str, float]] = {}
+        self._cloud_poll_at: dict[str, float] = {}
         self._ble_states: dict[str, dict] = {}
         self._ble_at: dict[str, float] = {}
         self._command_at: dict[str, float] = {}
@@ -213,8 +221,18 @@ class GlowriumCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
 
     async def _async_update_data(self) -> dict[str, dict[str, Any]]:
         async with self._source_lock:
+            now = monotonic()
+            due_accounts = [
+                key
+                for key in self.accounts
+                if key not in self._cloud_poll_at
+                or now - self._cloud_poll_at[key]
+                >= CLOUD_SCAN_INTERVAL.total_seconds()
+            ]
+            for key in due_accounts:
+                self._cloud_poll_at[key] = now
             await asyncio.gather(
-                *(self._refresh_account(key) for key in list(self.accounts)),
+                *(self._refresh_account(key) for key in due_accounts),
                 *(
                     self._refresh_ble(key, value)
                     for key, value in list(self.ble.items())
@@ -353,6 +371,7 @@ class GlowriumCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
         self.catalogs.pop(entry_id, None)
         self._cloud_states.pop(entry_id, None)
         self._cloud_at.pop(entry_id, None)
+        self._cloud_poll_at.pop(entry_id, None)
         local_id = self.local_entries.pop(entry_id, None)
         if local_id is not None:
             transport = self.ble.pop(local_id, None)

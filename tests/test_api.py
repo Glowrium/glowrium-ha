@@ -15,7 +15,7 @@ from custom_components.glowrium.api import (
 async def test_connection_error_is_translated_to_cloud_api_error():
     session = MagicMock()
     session.request.side_effect = ClientConnectionError("connection lost")
-    api = GlowriumApi(session, "https://api.example.test", "secret")
+    api = GlowriumApi(session, "https://api.example.test/iotapi", "secret")
     with pytest.raises(GlowriumApiError):
         await api.devices()
 
@@ -24,7 +24,7 @@ async def test_expired_token_starts_auth_error():
     session = MagicMock()
     response = MagicMock(status=401)
     session.request.return_value.__aenter__ = AsyncMock(return_value=response)
-    api = GlowriumApi(session, "https://api.example.test", "secret")
+    api = GlowriumApi(session, "https://api.example.test/iotapi", "secret")
     with pytest.raises(GlowriumAuthError):
         await api.devices()
 
@@ -33,12 +33,12 @@ async def test_cloud_command_retains_authenticated_payload_and_timeout():
     session = MagicMock()
     response = MagicMock(status=200, json=AsyncMock(return_value={"online": True}))
     session.request.return_value.__aenter__ = AsyncMock(return_value=response)
-    api = GlowriumApi(session, "https://api.example.test", "secret")
+    api = GlowriumApi(session, "https://api.example.test/iotapi", "secret")
     await api.command("owned-device", "set_brightness", brightness=80)
     call = session.request.call_args
     assert call.args == (
         "POST",
-        "https://api.example.test/api/homeassistant/v1/devices/owned-device/commands",
+        "https://api.example.test/iotapi/homeassistant/v1/devices/owned-device/commands",
     )
     assert call.kwargs["headers"] == {"Authorization": "Bearer secret"}
     assert call.kwargs["json"] == {"command": "set_brightness", "brightness": 80}
@@ -50,14 +50,14 @@ async def test_account_link_accepts_empty_success_response():
     response = MagicMock(status=204, json=AsyncMock())
     session.request.return_value.__aenter__ = AsyncMock(return_value=response)
     api = GlowriumApi(
-        session, "https://api.example.test", "secret", link_id="ha-entry"
+        session, "https://api.example.test/iotapi", "secret", link_id="ha-entry"
     )
 
     await api.unlink()
 
     calls = session.request.call_args_list
     assert [call.args[:2] for call in calls] == [
-        ("DELETE", "https://api.example.test/api/homeassistant/v1/links/ha-entry"),
+        ("DELETE", "https://api.example.test/iotapi/homeassistant/v1/links/ha-entry"),
     ]
     assert all(
         call.kwargs["headers"] == {"Authorization": "Bearer secret"}
@@ -79,7 +79,7 @@ async def test_login_requests_ha_specific_credentials():
         ),
     )
     session.request.return_value.__aenter__ = AsyncMock(return_value=response)
-    api = GlowriumApi(session, "https://api.example.test")
+    api = GlowriumApi(session, "https://api.example.test/iotapi")
 
     credentials = await api.login("Glowrium", "user@example.test", "secret", "ha-entry")
 
@@ -87,7 +87,7 @@ async def test_login_requests_ha_specific_credentials():
     assert credentials["refreshToken"] == "ha-refresh"
     call = session.request.call_args
     assert call.args == (
-        "POST", "https://api.example.test/api/homeassistant/v1/links/login"
+        "POST", "https://api.example.test/iotapi/homeassistant/v1/links/login"
     )
     assert call.kwargs["json"] == {
         "brand": "Glowrium",
@@ -118,7 +118,7 @@ async def test_expired_ha_access_token_refreshes_and_retries():
     ]
     saved = AsyncMock()
     api = GlowriumApi(
-        session, "https://api.example.test", "old-access",
+        session, "https://api.example.test/iotapi", "old-access",
         refresh_token="old-refresh", link_id="ha-entry", on_tokens=saved,
     )
 
